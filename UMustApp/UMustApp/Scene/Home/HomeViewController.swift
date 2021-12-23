@@ -14,12 +14,18 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        homeView.featuresStack.tapHandler = { tag in
+            if tag == 0 {
+                let vc = MostPopularViewController()
+                vc.modalPresentationStyle = .fullScreen
+                self.present(vc, animated: true)
+            }
+        }
     }
     
     override func loadView() {
         view = homeView
     }
-    
 }
 
 
