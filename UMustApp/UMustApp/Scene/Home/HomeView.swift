@@ -21,10 +21,28 @@ class HomeView: UIView, SetUpView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    let scrollView: UIScrollView = {
+        let scroll = UIScrollView()
+        scroll.backgroundColor = .clear
+        return scroll
+    }()
+    
+    let contentView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        return view
+    }()
+    
     let profileContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .systemBlue
+        view.backgroundColor = .white
         view.layer.cornerRadius = 12
+        return view
+    }()
+    
+    let profileBackGround: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.init(red: 144.0/255, green: 103.0/255, blue: 203.0/255, alpha: 1.0)
         return view
     }()
     
@@ -52,20 +70,85 @@ class HomeView: UIView, SetUpView {
         return label
     }()
     
+    let featuresStack: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.spacing = 16
+        stack.layoutMargins = .init(top: 32, left: 16, bottom: 32, right: 16)
+        stack.isLayoutMarginsRelativeArrangement = true
+        return stack
+    }()
+    
+    let mostPopularMovies = UIView()
+    let myFavotiresMovies = UIView()
+    
     func insertView() {
-        addSubview(profileContainerView)
+        addSubview(scrollView)
+        
+        scrollView.addSubview(contentView)
+        
+        contentView.addSubview(profileBackGround)
+        contentView.addSubview(profileContainerView)
+        contentView.addSubview(featuresStack)
+        
+        featuresStack.addArrangedSubview(mostPopularMovies)
+        featuresStack.addArrangedSubview(myFavotiresMovies)
+        
         profileContainerView.addSubview(userPhoto)
         profileContainerView.addSubview(userName)
         profileContainerView.addSubview(userDescription)
     }
     
     func setConstraints() {
+        scrollViewConstraints()
+        profileConstraints()
+        
+        featuresStack.translatesAutoresizingMaskIntoConstraints = false
+        featuresStack.topAnchor.constraint(equalTo: profileContainerView.bottomAnchor).isActive = true
+        featuresStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        featuresStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        featuresStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        
+        mostPopularMovies.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        myFavotiresMovies.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        
+    }
+    
+    func configView() {
+        scrollView.backgroundColor = UIColor.init(red: 110/255.0, green: 60/255.0, blue: 188/255.0, alpha: 1.0)
+        userPhoto.layer.cornerRadius = 64
+        mostPopularMovies.backgroundColor = .green
+        myFavotiresMovies.backgroundColor = .orange
+    }
+    
+    func scrollViewConstraints() {
+        
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        scrollView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        contentView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+    }
+    
+    func profileConstraints(){
+        profileBackGround.translatesAutoresizingMaskIntoConstraints = false
+        profileBackGround.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        profileBackGround.bottomAnchor.constraint(equalTo: profileContainerView.bottomAnchor).isActive = true
+        profileBackGround.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        profileBackGround.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
         
         profileContainerView.translatesAutoresizingMaskIntoConstraints = false
-        profileContainerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 128).isActive = true
+        profileContainerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 128).isActive = true
         profileContainerView.heightAnchor.constraint(equalToConstant: 200).isActive = true
-        profileContainerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
-        profileContainerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16).isActive = true
+        profileContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 32).isActive = true
+        profileContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -32).isActive = true
+       // profileContainerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         
         userPhoto.translatesAutoresizingMaskIntoConstraints = false
         userPhoto.heightAnchor.constraint(equalToConstant: 128).isActive = true
@@ -87,10 +170,6 @@ class HomeView: UIView, SetUpView {
         
     }
     
-    func configView() {
-        backgroundColor = .systemBackground
-        userPhoto.layer.cornerRadius = 64
-    }
-    
 }
+
 
