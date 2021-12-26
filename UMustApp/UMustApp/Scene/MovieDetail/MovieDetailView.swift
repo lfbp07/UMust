@@ -41,6 +41,20 @@ class MovieDetailView: UIView, SetUpView {
         stack.spacing = 32
         return stack
     }()
+        
+    let favorite: UIButton = {
+        let button = UIButton(type: .custom)
+        let image = UIImage(systemName: "star")
+        button.setImage(image, for: .normal)
+        button.tintColor = .black
+        return button
+    }()
+    
+    let favoriteContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        return view
+    }()
     
     let poster: UIImageView = {
         let imageView = UIImageView()
@@ -91,10 +105,22 @@ class MovieDetailView: UIView, SetUpView {
         return label
     }()
     
+    var isFavorite = false {
+        didSet {
+            if isFavorite {
+                favorite.setImage(UIImage(systemName: "star.fill"), for: .normal)
+            } else {
+                favorite.setImage(UIImage(systemName: "star"), for: .normal)
+            }
+        }
+    }
+    
     func insertView() {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubview(stack)
+        favoriteContainerView.addSubview(favorite)
+        stack.addArrangedSubview(favoriteContainerView)
         stack.addArrangedSubview(poster)
         stack.addArrangedSubview(title)
         stack.addArrangedSubview(year)
@@ -105,10 +131,18 @@ class MovieDetailView: UIView, SetUpView {
     func setConstraints() {
         scrollViewConstraints()
         
+        favoriteContainerView.translatesAutoresizingMaskIntoConstraints = false
+        favoriteContainerView.heightAnchor.constraint(equalToConstant: 32).isActive = true
+        
+        favorite.translatesAutoresizingMaskIntoConstraints = false
+        favorite.widthAnchor.constraint(equalToConstant: 32).isActive = true
+        favorite.heightAnchor.constraint(equalToConstant: 32).isActive = true
+        favorite.centerYAnchor.constraint(equalTo: favoriteContainerView.centerYAnchor).isActive = true
+        favorite.trailingAnchor.constraint(equalTo: favoriteContainerView.trailingAnchor).isActive = true
+        
         poster.translatesAutoresizingMaskIntoConstraints = false
         poster.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width - 32)*3/2).isActive = true
 
-        
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         stack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
@@ -118,6 +152,13 @@ class MovieDetailView: UIView, SetUpView {
     
     func configView() {
         scrollView.backgroundColor = UIColor.init(red: 110/255.0, green: 60/255.0, blue: 188/255.0, alpha: 1.0)
+        favorite.addTarget(self, action: #selector(tapFavorite), for: .touchUpInside)
+    }
+    
+    @objc
+    func tapFavorite(sender: UIButton) {
+        print("tap")
+        isFavorite.toggle()
     }
     
     func addvideoView(id: String) {
