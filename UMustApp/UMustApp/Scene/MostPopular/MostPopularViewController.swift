@@ -21,7 +21,6 @@ class MostPopularViewController: UIViewController, MostPopularViewModelProtocol 
         navigationController?.navigationBar.isHidden = false
         viewModel.delegate = self
         viewModel.fetchMostPopularData()
-        
     }
     
     override func loadView() {
@@ -32,14 +31,13 @@ class MostPopularViewController: UIViewController, MostPopularViewModelProtocol 
     }
     
     func updateCellWithText(model: MostPopularResponseModel) {
-        mostPopularView.movieData = model
-        mostPopularView.poster = .init(repeating: nil, count: model.results.count)
+        mostPopularView.movieData = model.results
         for i in (0..<model.results.count) {
-            viewModel.downLoadPoster(path: model.results[i].posterPath, atRow: i)
+            viewModel.downLoadPoster(path: model.results[i].posterPath, id: model.results[i].id)
         }
     }
     
-    func updateCellWithImage(data: Data, atRow: Int) {
-        mostPopularView.poster[atRow] = UIImage(data: data)
+    func updateCellWithImage(data: Data, id: Int) {
+        mostPopularView.poster[id] = UIImage(data: data)
     }
 }

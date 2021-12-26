@@ -18,15 +18,15 @@ class MostPopularViewModel {
         })
     }
     
-    func downLoadPoster(path: String, atRow: Int) {
+    func downLoadPoster(path: String, id: Int) {
         MostPopularRequest.downloadPoster(path: path, completion: {
             data in
-            self.delegate?.updateCellWithImage(data: data, atRow: atRow)
+            self.delegate?.updateCellWithImage(data: data, id: id)
         })
     }
 }
 
 protocol MostPopularViewModelProtocol {
     func updateCellWithText(model: MostPopularResponseModel)
-    func updateCellWithImage(data: Data, atRow: Int)
+    func updateCellWithImage(data: Data, id: Int)
 }

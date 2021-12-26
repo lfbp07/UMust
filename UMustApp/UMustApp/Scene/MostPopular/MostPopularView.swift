@@ -21,8 +21,8 @@ class MostPopularView: UIView, SetUpView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    let searchField: UISearchTextField = {
-        let search = UISearchTextField()
+    let searchField: UITextField = {
+        let search = UITextField()
         search.placeholder = "Nome do filme..."
         search.backgroundColor = .white
         return search
@@ -30,13 +30,25 @@ class MostPopularView: UIView, SetUpView {
     
     let tableView = UITableView()
     
-    var movieData: MostPopularResponseModel? {
+    var movieData: [Result]? {
+        didSet {
+            filterMovieData = movieData
+        }
+    }
+    
+    var poster: [Int:UIImage?] = [:] {
+        didSet {
+            filterPoster = poster
+        }
+    }
+    
+    var filterMovieData: [Result]? {
         didSet {
             tableView.reloadData()
         }
     }
     
-    var poster: [UIImage?] = [] {
+    var filterPoster: [Int:UIImage?] = [:] {
         didSet {
             tableView.reloadData()
         }
@@ -66,35 +78,50 @@ class MostPopularView: UIView, SetUpView {
     func configView() {
         backgroundColor = UIColor.init(red: 110/255.0, green: 60/255.0, blue: 188/255.0, alpha: 1.0)
         tableView.backgroundColor = .clear
-        searchField.delegate = self
+        searchField.addTarget(self, action: #selector(changedValue), for: .editingChanged)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(MostPopularCustomCell.self, forCellReuseIdentifier: "Cell")
         tableView.rowHeight = 200
     }
-}
-
-
-extension MostPopularView: UISearchTextFieldDelegate {
-    override class func didChangeValue(forKey key: String) {
-        print("did change value")
+    
+    @objc
+    func changedValue(_ search: UITextField) {
+        filterData(key: search.text!)
     }
+    
+    func filterData(key: String) {
+        
+        if key == "" {
+            filterMovieData = movieData
+            filterPoster = poster
+            return
+        }
+        
+        filterMovieData = movieData?.filter({ result in
+            return result.title.lowercased().contains(key.lowercased())
+        })
+        
+        filterPoster.removeAll()
+        for i in (0..<filterMovieData!.count) {
+            filterPoster[filterMovieData![i].id] = poster[filterMovieData![i].id]
+        }
+    }
+    
 }
+
 
 extension MostPopularView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return movieData?.results.count ?? 0
+        return filterMovieData?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as? MostPopularCustomCell {
-            cell.title.text = movieData?.results[indexPath.row].title ?? "No title found"
-            cell.year.text = movieData?.results[indexPath.row].releaseDate ?? "No overview found"
-            if indexPath.row < poster.count, let image = poster[indexPath.row] {
-                cell.poster.image = image
-                cell.poster.contentMode = .scaleAspectFill
-            }
+            cell.title.text = filterMovieData?[indexPath.row].title ?? "No title found"
+            cell.year.text = filterMovieData?[indexPath.row].releaseDate ?? "No overview found"
+            cell.poster.image = filterPoster[filterMovieData![indexPath.row].id] ?? UIImage()
             return cell
         }
         

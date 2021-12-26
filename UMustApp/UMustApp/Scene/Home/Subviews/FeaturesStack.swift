@@ -21,13 +21,13 @@ class FeatureStack: UIStackView, SetUpView {
     
     let cardColor = UIColor(red: 114.0/255, green: 103.0/255, blue: 203.0/255, alpha: 1.0)
     
-    let mostPopularMovies = Features(featureName: "Populares!")
+    let mostPopularMovies = Features(featureName: "Populars!")
     
-    let myFavotiresMovies = Features(featureName: "Favoritos!")
+    let myFavotiresMovies = Features(featureName: "Favorites!")
     
-    let recommendedMovies = Features(featureName: "Recomendaram!")
+    let recommendedMovies = Features(featureName: "For Me!")
     
-    let moviesYouRecommended = Features(featureName: "Recomendei!")
+    let moviesYouRecommended = Features(featureName: "By Me!")
     
     var tapHandler: ((Int) -> Void)?
     
