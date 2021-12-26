@@ -21,11 +21,11 @@ class FeatureStack: UIStackView, SetUpView {
     
     let cardColor = UIColor(red: 114.0/255, green: 103.0/255, blue: 203.0/255, alpha: 1.0)
     
-    let mostPopularMovies = Features(featureName: "Mais Populares")
+    let mostPopularMovies = Features(featureName: "Populares!")
     
-    let myFavotiresMovies = Features(featureName: "Meus Favoritos")
+    let myFavotiresMovies = Features(featureName: "Favoritos!")
     
-    let recommendedMovies = Features(featureName: "Me recomendaram!")
+    let recommendedMovies = Features(featureName: "Recomendaram!")
     
     let moviesYouRecommended = Features(featureName: "Recomendei!")
     
@@ -76,22 +76,6 @@ class FeatureStack: UIStackView, SetUpView {
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
         if let tag = sender.view?.tag {
             tapHandler?(tag)
-            switch tag {
-            case 0:
-                print("open Most Popular")
-            case 1:
-                print("open Favorites")
-                
-            case 2:
-                print("open Recommended for me")
-                
-            case 3:
-                print("open Recommended by me")
-                
-            default:
-                print("impossible")
-                
-            }
         }
     }
 }

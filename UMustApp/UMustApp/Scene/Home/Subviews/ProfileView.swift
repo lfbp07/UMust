@@ -41,6 +41,7 @@ class ProfileView: UIView, SetUpView {
         label.textColor = .black
         label.textAlignment = .left
         label.numberOfLines = 0
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     

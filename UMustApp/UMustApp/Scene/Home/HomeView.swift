@@ -44,7 +44,7 @@ class HomeView: UIView, SetUpView {
         let stack = FeatureStack()
         stack.axis = .vertical
         stack.spacing = 16
-        stack.layoutMargins = .init(top: 32, left: 16, bottom: 32, right: 16)
+        stack.layoutMargins = .init(top: 24, left: 32, bottom: 32, right: 24)
         stack.isLayoutMarginsRelativeArrangement = true
         return stack
     }()
@@ -56,7 +56,6 @@ class HomeView: UIView, SetUpView {
         
         contentView.addSubview(profileContainerView)
         contentView.addSubview(featuresStack)
-
     }
     
     func setConstraints() {
@@ -68,7 +67,6 @@ class HomeView: UIView, SetUpView {
         featuresStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         featuresStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         featuresStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
-        
     }
     
     func configView() {
@@ -95,8 +93,8 @@ class HomeView: UIView, SetUpView {
         profileContainerView.translatesAutoresizingMaskIntoConstraints = false
         profileContainerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 128).isActive = true
         profileContainerView.heightAnchor.constraint(equalToConstant: 200).isActive = true
-        profileContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 32).isActive = true
-        profileContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -32).isActive = true
+        profileContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16).isActive = true
+        profileContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16).isActive = true
     }
     
 }

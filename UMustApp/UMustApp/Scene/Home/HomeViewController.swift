@@ -11,18 +11,26 @@ import UIKit
 class HomeViewController: UIViewController {
   
     private let homeView = HomeView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        setUpViewAction()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = true
+    }
+    
+    func setUpViewAction () {
         homeView.featuresStack.tapHandler = { tag in
             if tag == 0 {
                 let vc = MostPopularViewController()
                 vc.modalPresentationStyle = .fullScreen
-                self.present(vc, animated: true)
+                self.navigationController?.pushViewController(vc, animated: true)
             }
         }
+        
     }
-    
     override func loadView() {
         view = homeView
     }
