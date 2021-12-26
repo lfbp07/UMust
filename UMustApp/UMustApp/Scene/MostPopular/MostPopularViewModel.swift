@@ -25,8 +25,3 @@ class MostPopularViewModel {
         })
     }
 }
-
-protocol MostPopularViewModelProtocol {
-    func updateCellWithText(model: MostPopularResponseModel)
-    func updateCellWithImage(data: Data, id: Int)
-}

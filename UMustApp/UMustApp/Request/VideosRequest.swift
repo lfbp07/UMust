@@ -1,16 +1,17 @@
 //
-//  MostPopularRequest.swift
+//  VideosRequest.swift
 //  UMustApp
 //
-//  Created by Luis Pereira on 25/12/21.
+//  Created by Luis Pereira on 26/12/21.
 //
 
 import Foundation
 
-class GenreRequest {
-    public class func fetchGenreNames(completion: @escaping ((GenreResponseModel) -> Void)) {
+class VideosRequest {
+    public class func fetchVideos(id: Int,completion: @escaping ((VideosResponseModel) -> Void))
+    {
         
-        let url:URL? = URL(string: "https://api.themoviedb.org/3/genre/movie/list?api_key=205e6b399ee3b7f57ff808d68d29e471&language=en-US")
+        let url:URL? = URL(string: "https://api.themoviedb.org/3/movie/\(id)/videos?api_key=205e6b399ee3b7f57ff808d68d29e471&language=en-US")
         
         let task = URLSession.shared.dataTask(with: url!, completionHandler: {
             (data, response, error) in
@@ -25,7 +26,7 @@ class GenreRequest {
                 if let safeData = data {
                     
                     do {
-                        let model = try JSONDecoder().decode(GenreResponseModel.self, from: safeData)
+                        let model = try JSONDecoder().decode(VideosResponseModel.self, from: safeData)
                         DispatchQueue.main.async {
                             completion(model)
                         }

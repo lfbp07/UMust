@@ -29,6 +29,7 @@ class MovieDetailViewController: UIViewController, MovieDetailViewModelProtocol 
         detailView.year.text = viewModel.movie.releaseDate
         detailView.overview.text = viewModel.movie.overview
         viewModel.fetchGenreName()
+        viewModel.fetchVideos()
     }
     
     override func viewWillAppear(_ animated: Bool) {

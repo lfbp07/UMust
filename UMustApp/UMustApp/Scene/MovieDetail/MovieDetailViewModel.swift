@@ -27,9 +27,13 @@ class MovieDetailViewModel {
             })
         })
     }
-}
-
-protocol MovieDetailViewModelProtocol {
-    func addGenreName(genre: String)
+    
+    func fetchVideos() {
+        VideosRequest.fetchVideos(id: movie.id, completion: { videoResponde in
+            videoResponde.results.forEach({ video in
+                print("\(video.site) \(video.key)")
+            })
+        })
+    }
 }
 
