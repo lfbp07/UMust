@@ -54,6 +54,8 @@ class MostPopularView: UIView, SetUpView {
         }
     }
     
+    var handleTap: ((Result, UIImage) -> Void)?
+    
     func insertView() {
         addSubview(searchField)
         addSubview(tableView)
@@ -124,12 +126,15 @@ extension MostPopularView: UITableViewDelegate, UITableViewDataSource {
             cell.poster.image = filterPoster[filterMovieData![indexPath.row].id] ?? UIImage()
             return cell
         }
-        
         return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("did select row: \(indexPath.row)")
+        guard let movie = filterMovieData?[indexPath.row] else { return }
+        
+        guard let poster = filterPoster[movie.id] else { return }
+        
+        handleTap?(movie, poster ?? UIImage())
     }
 }
 

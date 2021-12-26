@@ -15,6 +15,7 @@ class MostPopularViewController: UIViewController, MostPopularViewModelProtocol 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setViewAction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -28,6 +29,12 @@ class MostPopularViewController: UIViewController, MostPopularViewModelProtocol 
     }
     
     func setViewAction() {
+        mostPopularView.handleTap = { movie, image in
+            print(movie.title)
+            let viewModel = MovieDetailViewModel(movie: movie, poster: image)
+            let detatilVC = MovieDetailViewController(viewModel: viewModel)
+            self.navigationController?.pushViewController(detatilVC, animated: true)
+        }
     }
     
     func updateCellWithText(model: MostPopularResponseModel) {

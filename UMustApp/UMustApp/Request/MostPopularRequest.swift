@@ -34,7 +34,6 @@ class MostPopularRequest {
                     }
                 }
                 
-                
             } else if httpResponse.statusCode == 401 {
                 print("Unauthorized")
             } else if httpResponse.statusCode == 404 {
@@ -55,8 +54,6 @@ class MostPopularRequest {
             else { return }
             
             if httpResponse.statusCode == 200 {
-                
-                print("Image download ok")
                 
                 if let safeData = data {
                     DispatchQueue.main.async {
