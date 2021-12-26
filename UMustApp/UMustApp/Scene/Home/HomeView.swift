@@ -92,7 +92,7 @@ class HomeView: UIView, SetUpView {
         
         profileContainerView.translatesAutoresizingMaskIntoConstraints = false
         profileContainerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 128).isActive = true
-        profileContainerView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        profileContainerView.heightAnchor.constraint(greaterThanOrEqualToConstant: 200).isActive = true
         profileContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16).isActive = true
         profileContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16).isActive = true
     }

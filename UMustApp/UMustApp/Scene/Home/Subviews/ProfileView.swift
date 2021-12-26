@@ -30,6 +30,7 @@ class ProfileView: UIView, SetUpView {
         let label = UILabel()
         label.text = "Luis Pereira"
         label.font = .systemFont(ofSize: 24)
+        label.adjustsFontSizeToFitWidth = true
         label.textColor = .black
         return label
     }()
@@ -68,7 +69,7 @@ class ProfileView: UIView, SetUpView {
         userDescription.leadingAnchor.constraint(equalTo: userName.leadingAnchor).isActive = true
         userDescription.trailingAnchor.constraint(equalTo: userName.trailingAnchor).isActive = true
         userDescription.topAnchor.constraint(equalTo: userName.topAnchor, constant: 16).isActive = true
-        userDescription.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant:-16).isActive = true
+        userDescription.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant:-8).isActive = true
 
     }
     

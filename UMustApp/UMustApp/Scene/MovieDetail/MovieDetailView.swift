@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import youtube_ios_player_helper
 
 class MovieDetailView: UIView, SetUpView {
 
@@ -117,6 +118,14 @@ class MovieDetailView: UIView, SetUpView {
     
     func configView() {
         scrollView.backgroundColor = UIColor.init(red: 110/255.0, green: 60/255.0, blue: 188/255.0, alpha: 1.0)
+    }
+    
+    func addvideoView(id: String) {
+        let view = YTPlayerView()
+        view.backgroundColor = .black
+        view.load(withVideoId: id, playerVars: ["playsinline": 1])
+        view.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width*2/3).isActive = true
+        stack.addArrangedSubview(view)
     }
     
     func scrollViewConstraints() {

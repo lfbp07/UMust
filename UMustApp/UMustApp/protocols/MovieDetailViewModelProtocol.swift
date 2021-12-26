@@ -9,4 +9,5 @@ import Foundation
 
 protocol MovieDetailViewModelProtocol {
     func addGenreName(genre: String)
+    func addVideo(id: String)
 }

@@ -47,5 +47,9 @@ class MovieDetailViewController: UIViewController, MovieDetailViewModelProtocol 
         detailView.genre.text! += "\(genre), "
     }
     
+    func addVideo(id: String) {
+        detailView.addvideoView(id: id)
+    }
+    
 }
 

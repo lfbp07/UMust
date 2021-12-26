@@ -31,7 +31,9 @@ class MovieDetailViewModel {
     func fetchVideos() {
         VideosRequest.fetchVideos(id: movie.id, completion: { videoResponde in
             videoResponde.results.forEach({ video in
-                print("\(video.site) \(video.key)")
+                if video.site == "YouTube" {
+                    self.delegate?.addVideo(id: video.key)
+                }
             })
         })
     }
