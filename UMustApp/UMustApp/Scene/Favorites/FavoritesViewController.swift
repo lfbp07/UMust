@@ -8,10 +8,10 @@
 import UIKit
 
 
-class MostPopularViewController: UIViewController, MostPopularViewModelProtocol {
+class FavoritesViewController: UIViewController, FavoriteViewModelProtocol {
   
-    private let mostPopularView = MostPopularView()
-    private let viewModel = MostPopularViewModel()
+    private let favoriteView = FavoritesView()
+    private let viewModel = FavoritesViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,29 +21,33 @@ class MostPopularViewController: UIViewController, MostPopularViewModelProtocol 
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = false
         viewModel.delegate = self
-        viewModel.fetchMostPopularData()
+        favoriteView.movieData?.removeAll()
+        viewModel.fetchLocal()
+        viewModel.fetchMovies()
     }
     
     override func loadView() {
-        view = mostPopularView
+        view = favoriteView
     }
     
     func setViewAction() {
-        mostPopularView.handleTap = { movie, image in
+        favoriteView.handleTap = { movie, image in
+            print(movie.title)
             let viewModel = MovieDetailViewModel(movie: movie, poster: image)
             let detatilVC = MovieDetailViewController(viewModel: viewModel)
             self.navigationController?.pushViewController(detatilVC, animated: true)
         }
     }
     
+    func updateCellWithText(model: FavoriteResult) {
+        favoriteView.movieData?.append(model)
+        viewModel.downLoadPoster(path: model.posterPath, id: model.id)
+    }
+    
     func updateCellWithText(model: MostPopularResponseModel) {
-        mostPopularView.movieData = model.results
-        for i in (0..<model.results.count) {
-            viewModel.downLoadPoster(path: model.results[i].posterPath, id: model.results[i].id)
-        }
     }
     
     func updateCellWithImage(data: Data, id: Int) {
-        mostPopularView.poster[id] = UIImage(data: data)
+        favoriteView.poster[id] = UIImage(data: data)
     }
 }

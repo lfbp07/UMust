@@ -7,9 +7,10 @@
 
 import UIKit
 import youtube_ios_player_helper
+import CloudKit
 
 class MovieDetailView: UIView, SetUpView {
-
+    
     init() {
         super.init(frame: .zero)
         insertView()
@@ -41,7 +42,7 @@ class MovieDetailView: UIView, SetUpView {
         stack.spacing = 32
         return stack
     }()
-        
+    
     let favorite: UIButton = {
         let button = UIButton(type: .custom)
         let image = UIImage(systemName: "star")
@@ -115,6 +116,10 @@ class MovieDetailView: UIView, SetUpView {
         }
     }
     
+    var movieID: Int?
+    var saveDataHandler: ((Int) -> Void)?
+    var deleteDataHandler: ((Int) -> Void)?
+    
     func insertView() {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -142,7 +147,7 @@ class MovieDetailView: UIView, SetUpView {
         
         poster.translatesAutoresizingMaskIntoConstraints = false
         poster.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width - 32)*3/2).isActive = true
-
+        
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         stack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
@@ -157,9 +162,15 @@ class MovieDetailView: UIView, SetUpView {
     
     @objc
     func tapFavorite(sender: UIButton) {
-        print("tap")
         isFavorite.toggle()
+        if isFavorite {
+            saveDataHandler?(movieID ?? -1)
+        } else {
+            deleteDataHandler?(movieID ?? -1)
+        }
     }
+    
+    
     
     func addvideoView(id: String) {
         let view = YTPlayerView()

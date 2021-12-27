@@ -1,70 +1,31 @@
-//
-//  MovieDetailViewModel.swift
-//  UMustApp
-//
-//  Created by Luis Pereira on 26/12/21.
-//
+
 
 import Foundation
 import UIKit
 import CoreData
 
-class MovieDetailViewModel {
-    init(movie: Result, poster: UIImage) {
-        self.movie = movie
-        self.poster = poster
-    }
+class FavoritesViewModel {
     
-    let movie: Result
-    let poster: UIImage
-    var delegate: MovieDetailViewModelProtocol?
+    var delegate: FavoriteViewModelProtocol?
     var movieToSave: [NSManagedObject] = []
     
-    func fetchGenreName() {
-        GenreRequest.fetchGenreNames(completion: {genreResponse in
-            genreResponse.genres.forEach({ genre in
-                if self.movie.genreIDS.contains(genre.id) {
-                    self.delegate?.addGenreName(genre: genre.name)
-                }
-            })
-        })
-    }
-    
-    func fetchVideos() {
-        VideosRequest.fetchVideos(id: movie.id, completion: { videoResponde in
-            videoResponde.results.forEach({ video in
-                if video.site == "YouTube" {
-                    self.delegate?.addVideo(id: video.key)
-                }
-            })
-        })
-    }
-    
-    func saveLocal(movieID: String) {
-        
-        guard let appDelegate =
-                UIApplication.shared.delegate as? AppDelegate else {
-                    return
-                }
-        
-        let managedContext =
-        appDelegate.persistentContainer.viewContext
-        
-        let entity =
-        NSEntityDescription.entity(forEntityName: "Movie",
-                                   in: managedContext)!
-        
-        let person = NSManagedObject(entity: entity,
-                                     insertInto: managedContext)
-        
-        person.setValue(movieID, forKeyPath: "id")
-        
-        do {
-            try managedContext.save()
-            movieToSave.append(person)
-        } catch let error as NSError {
-            print("Could not save. \(error), \(error.userInfo)")
+    func fetchMovies() {
+        for obj in movieToSave {
+            if let movieID = obj.value(forKey: "id") as? String {
+                MovieRequest.fetchMovie(id: movieID, completion: { movie in
+                    let result = FavoriteResult(id: movie.id ?? 0, originalTitle: movie.originalTitle ?? "", overview: movie.overview ?? "", posterPath: movie.posterPath ?? "", releaseDate: movie.releaseDate ?? "", genreIDS: movie.genres ?? [])
+                    self.delegate?.updateCellWithText(model: result)
+                })
+            }
         }
+        
+    }
+    
+    func downLoadPoster(path: String, id: Int) {
+        MostPopularRequest.downloadPoster(path: path, completion: {
+            data in
+            self.delegate?.updateCellWithImage(data: data, id: id)
+        })
     }
     
     func fetchLocal() {
@@ -77,17 +38,14 @@ class MovieDetailViewModel {
         let managedContext =
         appDelegate.persistentContainer.viewContext
         
-        //2
         let fetchRequest =
         NSFetchRequest<NSManagedObject>(entityName: "Movie")
         
-        //3
         do {
             movieToSave = try managedContext.fetch(fetchRequest)
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
-        
     }
     
     func deleteLocalData(movieID: String) {
@@ -144,3 +102,14 @@ class MovieDetailViewModel {
     }
 }
 
+struct FavoriteResult {
+    let id: Int
+    let originalTitle, overview: String
+    let posterPath, releaseDate: String
+    let genreIDS: [GenreModel]
+}
+
+protocol FavoriteViewModelProtocol {
+    func updateCellWithText(model: FavoriteResult)
+    func updateCellWithImage(data: Data, id: Int)
+}

@@ -28,10 +28,14 @@ class HomeViewController: UIViewController {
                 let vc = MostPopularViewController()
                 vc.modalPresentationStyle = .fullScreen
                 self.navigationController?.pushViewController(vc, animated: true)
+            } else if tag == 1 {
+                let vc = FavoritesViewController()
+                vc.modalPresentationStyle = .fullScreen
+                self.navigationController?.pushViewController(vc, animated: true)
             }
         }
-        
     }
+    
     override func loadView() {
         view = homeView
     }

@@ -20,7 +20,7 @@ class GenreRequest {
             
             if httpResponse.statusCode == 200 {
                 
-                print("Most popular resquest ok")
+                
                 
                 if let safeData = data {
                     

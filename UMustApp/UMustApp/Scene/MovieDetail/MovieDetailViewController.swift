@@ -21,13 +21,23 @@ class MovieDetailViewController: UIViewController, MovieDetailViewModelProtocol 
         super.viewDidLoad()
         self.viewModel.delegate = self
         handleViewModel()
+        setViewAction()
     }
     
     func handleViewModel() {
+        viewModel.fetchLocal()
+        for movie in viewModel.movieToSave {
+            if let idString = movie.value(forKey: "id") as? String {
+                if idString == String(viewModel.movie.id) {
+                    detailView.isFavorite = true
+                }
+            }
+        }
         detailView.poster.image = viewModel.poster
         detailView.title.text = viewModel.movie.title
         detailView.year.text = viewModel.movie.releaseDate
         detailView.overview.text = viewModel.movie.overview
+        detailView.movieID = viewModel.movie.id
         viewModel.fetchGenreName()
         viewModel.fetchVideos()
     }
@@ -41,6 +51,16 @@ class MovieDetailViewController: UIViewController, MovieDetailViewModelProtocol 
     }
     
     func setViewAction() {
+        
+        detailView.saveDataHandler = { id in
+            print("save data: \(id)")
+            self.viewModel.saveLocal(movieID: String(id))
+        }
+        
+        detailView.deleteDataHandler = { id in 
+            print("delete data \(id)")
+            self.viewModel.deleteLocalData(movieID: String(id))
+        }
     }
 
     func addGenreName(genre: String) {
