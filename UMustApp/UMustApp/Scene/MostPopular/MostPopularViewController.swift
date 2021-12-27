@@ -16,6 +16,8 @@ class MostPopularViewController: UIViewController, MostPopularViewModelProtocol 
     override func viewDidLoad() {
         super.viewDidLoad()
         setViewAction()
+        let button = UIBarButtonItem(image: UIImage(systemName: "line.horizontal.3.decrease.circle"), style: .plain, target: self, action: #selector(filterTapped))
+        navigationItem.rightBarButtonItem = button
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -26,6 +28,14 @@ class MostPopularViewController: UIViewController, MostPopularViewModelProtocol 
     
     override func loadView() {
         view = mostPopularView
+    }
+    
+    @objc
+    func filterTapped() {
+        let vc = FilterViewController()
+        vc.delegate = self
+        vc.modalPresentationStyle = .automatic
+        self.present(vc, animated: true, completion: nil)
     }
     
     func setViewAction() {
@@ -63,5 +73,25 @@ class MostPopularViewController: UIViewController, MostPopularViewModelProtocol 
             self.present(alert, animated: true, completion: nil)
         }
     }
+    
+}
+
+extension MostPopularViewController: OrderProtocol {
+    func orderBy(parameter: Int) {
+        if parameter == 0 {
+            print("order by name")
+            mostPopularView.filterMovieData?.sort(by: {a,b in
+                a.originalTitle < b.originalTitle
+            })
+        }else if parameter == 1 {
+            print("order by date")
+            mostPopularView.filterMovieData?.sort(by: {a,b in
+                a.releaseDate < b.releaseDate
+            })
+        } else {
+            
+        }
+    }
+    
     
 }

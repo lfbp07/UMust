@@ -104,6 +104,7 @@ class MostPopularView: UIView, SetUpView {
     func endRefresh() {
         refreshControl.endRefreshing()
     }
+    
     @objc
     func changedValue(_ search: UITextField) {
         filterData(key: search.text!)
