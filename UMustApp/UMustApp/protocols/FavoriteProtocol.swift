@@ -10,4 +10,5 @@ import Foundation
 protocol FavoriteViewModelProtocol {
     func updateCellWithText(model: FavoriteResult)
     func updateCellWithImage(data: Data, id: Int)
+    func showErrorAlert(message: String)
 }

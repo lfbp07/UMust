@@ -9,4 +9,5 @@ import Foundation
 protocol MostPopularViewModelProtocol {
     func updateCellWithText(model: MostPopularResponseModel)
     func updateCellWithImage(data: Data, id: Int)
+    func showErrorAlert(message: String)
 }

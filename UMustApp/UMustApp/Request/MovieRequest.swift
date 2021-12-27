@@ -8,7 +8,7 @@
 import Foundation
 
 class MovieRequest {
-    public class func fetchMovie(id: String,completion: @escaping ((MovieDataModel) -> Void))
+    public class func fetchMovie(id: String,completion: @escaping ((MovieDataModel?, Int) -> Void))
     {
         
         let url:URL? = URL(string: "https://api.themoviedb.org/3/movie/\(id)?api_key=205e6b399ee3b7f57ff808d68d29e471&language=en-US")
@@ -26,7 +26,7 @@ class MovieRequest {
                     do {
                         let model = try JSONDecoder().decode(MovieDataModel.self, from: safeData)
                         DispatchQueue.main.async {
-                            completion(model)
+                            completion(model, 200)
                         }
                     } catch {
                         print(error.localizedDescription + " erro aqui")
@@ -35,8 +35,10 @@ class MovieRequest {
                 
             } else if httpResponse.statusCode == 401 {
                 print("Unauthorized")
+                completion(nil, 401)
             } else if httpResponse.statusCode == 404 {
                 print("Not Found")
+                completion(nil, 404)
             }
         })
         task.resume()

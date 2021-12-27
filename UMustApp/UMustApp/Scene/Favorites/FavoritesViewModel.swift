@@ -12,9 +12,17 @@ class FavoritesViewModel {
     func fetchMovies() {
         for obj in movieToSave {
             if let movieID = obj.value(forKey: "id") as? String {
-                MovieRequest.fetchMovie(id: movieID, completion: { movie in
-                    let result = FavoriteResult(id: movie.id ?? 0, originalTitle: movie.originalTitle ?? "", overview: movie.overview ?? "", posterPath: movie.posterPath ?? "", releaseDate: movie.releaseDate ?? "", genreIDS: movie.genres ?? [])
-                    self.delegate?.updateCellWithText(model: result)
+                MovieRequest.fetchMovie(id: movieID, completion: { movie, statusCode in
+                    if statusCode == 200 {
+                        let result = FavoriteResult(id: movie?.id ?? 0, originalTitle: movie?.originalTitle ?? "", overview: movie?.overview ?? "", posterPath: movie?.posterPath ?? "", releaseDate: movie?.releaseDate ?? "", genreIDS: movie?.genres ?? [])
+                        self.delegate?.updateCellWithText(model: result)
+                    } else if statusCode == 401 {
+                        self.delegate?.showErrorAlert(message: "401 Unauthorized")
+                    } else if statusCode == 404 {
+                        self.delegate?.showErrorAlert(message: "404 Not Found")
+                    } else {
+                        self.delegate?.showErrorAlert(message: "Unexpected error")
+                    }
                 })
             }
         }

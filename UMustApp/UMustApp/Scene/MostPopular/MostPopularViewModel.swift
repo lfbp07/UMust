@@ -13,8 +13,16 @@ class MostPopularViewModel {
     
     func fetchMostPopularData() {
         MostPopularRequest.fetchMostPopular(completion: {
-            model in
-            self.delegate?.updateCellWithText(model: model)
+            model, statusCode in
+            if statusCode == 200 {
+                self.delegate?.updateCellWithText(model: model!)
+            } else if statusCode == 401 {
+                self.delegate?.showErrorAlert(message: "401 Unauthorized")
+            } else if statusCode == 404 {
+                self.delegate?.showErrorAlert(message: "404 Not Found")
+            } else {
+                self.delegate?.showErrorAlert(message: "Unexpected error")
+            }
         })
     }
     

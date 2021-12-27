@@ -50,4 +50,16 @@ class FavoritesViewController: UIViewController, FavoriteViewModelProtocol {
     func updateCellWithImage(data: Data, id: Int) {
         favoriteView.poster[id] = UIImage(data: data)
     }
+    
+    func showErrorAlert(message: String) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "Ops!", message: message, preferredStyle: UIAlertController.Style.alert)
+            
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: { _ in
+                self.navigationController?.popViewController(animated: true)
+                
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
 }

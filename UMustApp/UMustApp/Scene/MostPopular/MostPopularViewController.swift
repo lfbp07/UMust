@@ -9,7 +9,7 @@ import UIKit
 
 
 class MostPopularViewController: UIViewController, MostPopularViewModelProtocol {
-  
+    
     private let mostPopularView = MostPopularView()
     private let viewModel = MostPopularViewModel()
     
@@ -46,4 +46,17 @@ class MostPopularViewController: UIViewController, MostPopularViewModelProtocol 
     func updateCellWithImage(data: Data, id: Int) {
         mostPopularView.poster[id] = UIImage(data: data)
     }
+    
+    func showErrorAlert(message: String) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "Ops!", message: message, preferredStyle: UIAlertController.Style.alert)
+            
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: { _ in
+                self.navigationController?.popViewController(animated: true)
+                
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
 }
