@@ -21,7 +21,7 @@ class ProfileView: UIView, SetUpView {
     }
     
     let userPhoto: UIImageView = {
-        let imageView = UIImageView()
+        let imageView = UIImageView(image: UIImage(named: "eu.png"))
         imageView.backgroundColor = .systemFill
         return imageView
     }()
@@ -75,5 +75,7 @@ class ProfileView: UIView, SetUpView {
     
     func configView() {
         userPhoto.layer.cornerRadius = 64
+        userPhoto.contentMode = .scaleAspectFill
+        userPhoto.layer.masksToBounds = true
     }
 }
