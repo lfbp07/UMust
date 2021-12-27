@@ -34,6 +34,10 @@ class MostPopularViewController: UIViewController, MostPopularViewModelProtocol 
             let detatilVC = MovieDetailViewController(viewModel: viewModel)
             self.navigationController?.pushViewController(detatilVC, animated: true)
         }
+        
+        mostPopularView.refreshDataHandler = {
+            self.viewModel.fetchMostPopularData()
+        }
     }
     
     func updateCellWithText(model: MostPopularResponseModel) {
@@ -41,6 +45,7 @@ class MostPopularViewController: UIViewController, MostPopularViewModelProtocol 
         for i in (0..<model.results.count) {
             viewModel.downLoadPoster(path: model.results[i].posterPath, id: model.results[i].id)
         }
+        mostPopularView.endRefresh()
     }
     
     func updateCellWithImage(data: Data, id: Int) {

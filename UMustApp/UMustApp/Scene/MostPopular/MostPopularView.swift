@@ -30,6 +30,8 @@ class MostPopularView: UIView, SetUpView {
     
     let tableView = UITableView()
     
+    let refreshControl = UIRefreshControl()
+    
     var movieData: [Result]? {
         didSet {
             filterMovieData = movieData
@@ -55,6 +57,8 @@ class MostPopularView: UIView, SetUpView {
     }
     
     var handleTap: ((Result, UIImage) -> Void)?
+    
+    var refreshDataHandler: (() -> Void)?
     
     var isEmpty = false
     
@@ -87,8 +91,19 @@ class MostPopularView: UIView, SetUpView {
         tableView.delegate = self
         tableView.register(MostPopularCustomCell.self, forCellReuseIdentifier: "Cell")
         tableView.rowHeight = 200
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
+        tableView.addSubview(refreshControl)
     }
     
+    @objc func refresh(_ sender: AnyObject) {
+        refreshDataHandler?()
+    }
+    
+    
+    func endRefresh() {
+        refreshControl.endRefreshing()
+    }
     @objc
     func changedValue(_ search: UITextField) {
         filterData(key: search.text!)
