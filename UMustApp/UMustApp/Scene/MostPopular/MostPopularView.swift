@@ -56,6 +56,8 @@ class MostPopularView: UIView, SetUpView {
     
     var handleTap: ((Result, UIImage) -> Void)?
     
+    var isEmpty = false
+    
     func insertView() {
         addSubview(searchField)
         addSubview(tableView)
@@ -75,7 +77,7 @@ class MostPopularView: UIView, SetUpView {
         tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
         
-        }
+    }
     
     func configView() {
         backgroundColor = UIColor.init(red: 110/255.0, green: 60/255.0, blue: 188/255.0, alpha: 1.0)
@@ -115,17 +117,33 @@ class MostPopularView: UIView, SetUpView {
 
 extension MostPopularView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return filterMovieData?.count ?? 0
+        
+        if let rows = filterMovieData?.count {
+            let searchText = searchField.text ?? ""
+            if !searchText.isEmpty && rows == 0 { isEmpty = true}
+            else { isEmpty = false }
+            
+            return isEmpty ? 1 : rows
+        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as? MostPopularCustomCell {
-            cell.title.text = filterMovieData?[indexPath.row].title ?? "No title found"
-            cell.year.text = filterMovieData?[indexPath.row].releaseDate ?? "No overview found"
-            cell.poster.image = filterPoster[filterMovieData![indexPath.row].id] ?? UIImage()
-            return cell
+            if !isEmpty {
+                cell.title.text = filterMovieData?[indexPath.row].title ?? "No title found"
+                cell.year.text = filterMovieData?[indexPath.row].releaseDate ?? "No overview found"
+                cell.poster.image = filterPoster[filterMovieData![indexPath.row].id] ?? UIImage()
+                return cell
+            } else {
+                cell.title.text = "SORRY, NO MOVIE FOUND"
+                cell.year.text = "try again"
+                cell.poster.image = UIImage()
+                return cell
+            }
         }
+        
         return UITableViewCell()
     }
     

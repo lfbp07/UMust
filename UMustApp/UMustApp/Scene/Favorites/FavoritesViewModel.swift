@@ -101,15 +101,3 @@ class FavoritesViewModel {
         
     }
 }
-
-struct FavoriteResult {
-    let id: Int
-    let originalTitle, overview: String
-    let posterPath, releaseDate: String
-    let genreIDS: [GenreModel]
-}
-
-protocol FavoriteViewModelProtocol {
-    func updateCellWithText(model: FavoriteResult)
-    func updateCellWithImage(data: Data, id: Int)
-}
